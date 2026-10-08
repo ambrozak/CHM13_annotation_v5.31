@@ -1,0 +1,24 @@
+qry_id,decision,matchedwithpseudo,novellocus,notes
+gene-LOC128031832,Leave,No,No,Very short; Overlapping exon of larger gene; Same case in GRCh38;Peptide w/ no papers
+gene-LOC128125817,Leave,No,No,Very short; Overlapping exon of larger gene; Same case in GRCh38;Peptide w/ no papers
+gene-CYP4B1,Replace,No,No,Matches existing intron-exon structure well; Improves protein identity w/ a small frameshift
+gene-LOC128092251,Leave,No,No,Very short; Overlapping exon of larger gene; Same case in GRCh38;Peptide w/ no papers
+gene-LOC128071544,Leave,No,No,Short; Overlapping exon of larger gene; Same case in GRCh38;Short protein w/ 2 weak papers
+gene-LOC128031836,Leave,No,No,Very short; Overlapping exon of larger gene; Same case in GRCh38;Peptide w/ no papers
+gene-NEK3,Replace,No,No,Matches existing intron-exon structure well; Improves protein identity and makes many non-coding exons coding
+gene-CLEC18C,Leave,No,No,Swapped with CLEC18A
+gene-CCL4L1,Leave,No,No,Existing annotation has CCL3L3;CCL3L3_1;CCL4L2;CCL4L2_1. MANE maps CCL3L1;CCL3L3;CCL4L1;CCL4L2
+gene-EFCAB13,Leave,No,No,Truncated protein led to low seq-id; MANE mapping didn't find a solution just slightly better
+gene-TRIM61,Add,No,No,Looks good
+gene-WASHC1_8,Add,No,No,Better than existing transcript w/ same NM ID
+gene-TCP11X1,Leave,No,No,Broken gene with inserted stop codon; LiftOn just gave the other half of the CDS
+gene-SIRPB1,Replace,No,No,New mapping recovered 3 coding exons
+gene-NPIPA9,Leave,Yes,No,gffcompare matches w/ wrong gene; correct existing annotation has identical CDS
+gene-KIR2DS2-2,ReplacePseudo,Yes,No,Existing pseudogene annotation is a poor mapping (seq id of 0.82)
+gene-MYH16,ReplacePseudo,Yes,No,MANE upgraded this from pseudogene to real gene. Functionality is still in question but the protein is expressed
+gene-SPINK14,AddPseudo,No,Yes,Broken gene
+gene-MUC6,AddGene,No,Yes,Low identity due to Exon #30 having a variable number tandem repeat section; there is a paper on this and MUC2
+gene-NBPF14,AddPseudo,No,Yes,Identity of 0.89; there is an extra copy of this already mapped to a functional gene; this is likely pseudogene
+gene-FCGBP-2,AddGene,No,Yes,Very high identity via gffread and this program. Labeled as frameshift but does not have any large differences; less than 20 single base differences in CDS
+gene-WASHC1,Leave,No,No,Very broken gene copy; overlapped with XM transcript but has good DNA identity
+gene-MUC12,AddGene,No,Yes,Good mapping; overlapped and paired with its own antisense gene by gffcompare; oddly missing from existing annotation
