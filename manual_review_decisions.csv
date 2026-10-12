@@ -9,7 +9,7 @@ gene-NEK3,Replace,No,No,Matches existing intron-exon structure well; Improves pr
 gene-CLEC18C,Leave,No,No,Swapped with CLEC18A
 gene-CCL4L1,Leave,No,No,Existing annotation has CCL3L3;CCL3L3_1;CCL4L2;CCL4L2_1. MANE maps CCL3L1;CCL3L3;CCL4L1;CCL4L2
 gene-EFCAB13,Leave,No,No,Truncated protein led to low seq-id; MANE mapping didn't find a solution just slightly better
-gene-TRIM61,Add,No,No,Looks good
+gene-TRIM61,Add,No,No,Looks good; solid improvement over existing annotation with no red flags.
 gene-WASHC1_8,Add,No,No,Better than existing transcript w/ same NM ID
 gene-TCP11X1,Leave,No,No,Broken gene with inserted stop codon; LiftOn just gave the other half of the CDS
 gene-SIRPB1,Replace,No,No,New mapping recovered 3 coding exons
