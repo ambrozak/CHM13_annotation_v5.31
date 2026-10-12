@@ -2,11 +2,11 @@
 
 ## Motivation
 
-The goal of this update to the CHM13 annotation is to incorporate the newly added genes in the MANE v1.5 release. In addition to this, MANE v1.5 was mapped to CHM13 using the tool LiftOn, which directly refines and improves the mappings of LiftOff. This resulted in both higher quality and some novel mappings for transcripts which were already in CHM13's annotation.
+This update incorporates newly added genes from MANE v1.5 into the T2T-CHM13 annotation. We mapped MANE v1.5 from GRCh38 to CHM13 using LiftOn, which refines LiftOff-based mappings and can identify additional copies of genes. This yielded both improved mappings for genes already annotated in CHM13 and mappings in novel loci.
 
 ## Results
 
-The v5.31 annotation has resulted in the addition of 16 novel transcripts to existing genes, 8 improvements to existing transcript mappings, 17 novel gene loci (10 of which were extra copies of existing genes), 2 new pseudogene annotations, and 2 gene annotations taking the place of pseudogenes. 
+The v5.31 annotation update adds 16 novel transcripts to existing genes, 8 improvements to existing transcript mappings, 17 novel gene loci (10 of which were extra copies of existing genes), 2 new pseudogene annotations, and replaces 2 pseudogene annotations with genes. 
 
 A count of gene biotypes before and after can be found below:
 
@@ -15,7 +15,7 @@ A count of gene biotypes before and after can be found below:
 |----------|----------|----------|
 | Protein coding   | 20,064    | 20,083 (+19)    |
 | LncRNA    | 18,385     | 18,385 (+0)    |
-| Pseudogene    | 17,466  | 17,466 (-2, +2)   |
+| Pseudogene    | 17,466  | 17,466 (+2, -2)   |
 | Other	| 5,427 | 5,427 (+0)	|
 | **Total** | 61,342 | 61,361 (+19) |
 
@@ -45,7 +45,7 @@ gffcompare -r ./chm13v2.0_gene2exon.gff ./MANE_on_chm13.gff
 
 After running gffcompare, we filtered down the MANE gene mappings to a set that are likely to be 1) correctly mapped, and 2) an improvement over the existing CHM13 annotations in the same locus, if there are any.
 
-First, to filter out MANE gene mappings that are likely to be incorrectly mapped, we don't consider any mappings which don't preserve either of their direct neighbors. For example, take this gene ordering:
+First, we filtered out MANE gene mappings that were likely to be incorrectly mapped based on gene order. We consider each gene's immediate neighbors both before and after mapping. We retain a mapping only if at least one of its original neighbors remains adjcent to it after mapping. For example, take this gene ordering:
 
 ```
 Before mapping:
@@ -73,7 +73,7 @@ If both A and B are protein coding:
         Filter out A
 ```
 
-After this process, we're left with a set of MANE gene mappings that are likely to be improvements to existing coding annotations (33), in novel loci (18), or overlap existing pseudogenes (143).
+After this process, we're left with a set of MANE gene mappings that are likely to be improvements to existing coding annotations (33), in novel loci (17), or overlap existing pseudogenes (143).
 
 ### Replacing or Adding To Existing Annotations
 
@@ -95,16 +95,16 @@ If A is matched with existing coding transcript B:
 
 If A is in a novel locus:
     If A's CDS has at least 95% protein identity with A's original MANE protein:
-        If A has no start/stop codon or frameshift mutations:
+        If A has no missing start/stop codon or frameshift mutations:
             Automatically add A
     Else:
-        Manually Review A
+        Manually review A
 
 
 If A overlaps with an existing pseudogene P:
     If A's CDS has 100% protein identity with A's original MANE protein:
         If LiftOn did not find extra copies of A on CHM13 which overlap with an existing functional annotation of A:
-            Replace P with A
+            Automatically replace P with A
     Else:
         Filter out A
 ```
