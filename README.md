@@ -43,9 +43,9 @@ gffcompare -r ./chm13v2.0_gene2exon.gff ./MANE_on_chm13.gff
 
 ### Filtering Out Low Quality Mappings
 
-After running gffcompare, we now want to filter down the MANE gene mappings to a set that we believe to be 1) correctly mapped, and 2) an improvement over the existing CHM13 annotations in the same locus, if there are any.
+After running gffcompare, we filtered down the MANE gene mappings to a set that are likely to be 1) correctly mapped, and 2) an improvement over the existing CHM13 annotations in the same locus, if there are any.
 
-First, to filter out MANE gene mappings that are likely to be low-quality, we don't consider any mappings which don't preserve either of their direct neighbors. For example, take this gene ordering:
+First, to filter out MANE gene mappings that are likely to be incorrectly mapped, we don't consider any mappings which don't preserve either of their direct neighbors. For example, take this gene ordering:
 
 ```
 Before mapping:
@@ -55,7 +55,7 @@ After mapping:
  ... - A - E - C - D - B - F - ...
 ```
 
-Here, E and B may have switched positions due to high similarity. We automatically filter out both because neither of their neighbors stay the same after mapping. We still consider C and D because at least one of their neighbors are conserved.
+Here, E and B may have switched positions due to high similarity. We automatically filter out both because neither of their neighbors stay the same after mapping. We still consider C and D because at least one of their neighbors is conserved.
 
 Second, to filter out MANE mappings that are unlikely to improve the existing annotation, we use the following criteria:
 
@@ -111,7 +111,7 @@ If A overlaps with an existing pseudogene P:
 
 21 mappings were manually reviewed, final decisions and notes on each can be found in [manual_review_decisions.csv](./manual_review_decisions.csv)
 
-## Requirements
+## Reproducing Results
 
 To run these scripts, install the following:
 
