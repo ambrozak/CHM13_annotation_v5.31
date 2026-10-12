@@ -132,3 +132,5 @@ Python Libraries:
 
  bash run_pipeline.sh
  ```
+
+ Note that generating the new annotation relies on the decisions in [manual_review_decisions.csv](./manual_review_decisions.csv).
