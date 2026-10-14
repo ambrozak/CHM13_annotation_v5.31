@@ -6,7 +6,7 @@ lifton -g ./MANEv1.5.gff -chroms ./chrom_mapping.txt -copies -sc 0.9 ./chm13v2.0
 
 # Give each pseudogene in CHM13v5.3 a transcript using gffread's --gene2exon flag:
 
-gffread --gene2exon ./chm13v2.0.fa > ./chm13v2.0_gene2exon.gff
+gffread --gene2exon ./chm13v5.3.gff > ./chm13v2.0_gene2exon.gff
 
 # Compare annotations using gffcompare:
 
