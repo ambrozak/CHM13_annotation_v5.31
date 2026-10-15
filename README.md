@@ -25,7 +25,7 @@ Note these totals are counted using the gene_biotype field, differing slightly f
 
 ### Lift-Over and Mapping
 
-We first ran LiftOn, mapping over MANE v1.5 genes from GRCh38 onto CHM13, using the following command:
+We first ran LiftOn, mapping over MANE v1.5 genes from GRCh38 onto CHM13 using the following command:
 
 ```bash
 lifton -g ./MANEv1.5.gff -chroms ./chrom_mapping.txt -copies -sc 0.9 ./chm13v2.0.fa ./hg38.p14.fa -o MANE_on_chm13.gff
@@ -33,7 +33,7 @@ lifton -g ./MANEv1.5.gff -chroms ./chrom_mapping.txt -copies -sc 0.9 ./chm13v2.0
 
 This lifts chromosome-by-chromosome, and searches for additional copies of genes that share at least 90% identity with the first copy.
 
-We then altered the CHM13 v5.3 annotation to give each pseudogene a single-exon transcript, then used gffcompare to map each MANE transcript to its closest CHM13 v5.3 transcript:
+We altered the CHM13 v5.3 annotation to give each pseudogene a single-exon transcript, then used gffcompare to map each MANE transcript to its closest CHM13 v5.3 transcript:
 
 ```bash
 gffread --gene2exon ./chm13v2.0.fa > ./chm13v2.0_gene2exon.gff
@@ -109,7 +109,7 @@ If A overlaps with an existing pseudogene P:
         Filter out A
 ```
 
-21 mappings were manually reviewed, final decisions and notes on each can be found in [manual_review_decisions.csv](./manual_review_decisions.csv)
+23 mappings were manually reviewed, final decisions and notes on each can be found in [manual_review_decisions.csv](./manual_review_decisions.csv)
 
 ## Reproducing Results
 
