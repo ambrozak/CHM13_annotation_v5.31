@@ -118,6 +118,7 @@ To run these scripts, install the following:
 Tools:
  - LiftOn
  - gffcompare
+ - gffread
 
 Python Libraries:
  - pandas
@@ -134,3 +135,11 @@ Python Libraries:
  ```
 
  Note that generating the new annotation relies on the decisions in [manual_review_decisions.csv](./manual_review_decisions.csv).
+
+ ### Output
+
+ The updated annotation file is created as ```chm13v5.31_MANE_updated.gff```. 
+ A list of all changes made to the annotation is in ```annotation_changes.tsv```. 
+ Lastly, a record of what was done with the novel MANE v1.5 genes is listed in ```gene_trace.tsv```.
+
+ If you wish to track a different set of genes from MANE, change the list of dbxref gene IDs in ```gene_ids_new_in_MANE1.5.txt``` to those of your choosing.
