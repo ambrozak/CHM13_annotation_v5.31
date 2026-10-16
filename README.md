@@ -6,7 +6,9 @@ This update incorporates newly added genes from MANE v1.5 into the T2T-CHM13 ann
 
 ## Results
 
-The v5.31 annotation update adds 16 novel transcripts to existing genes, 8 improvements to existing transcript mappings, 17 novel gene loci (10 of which were extra copies of existing genes), 2 new pseudogene annotations, and replaces 2 pseudogene annotations with genes. 
+The v5.31 annotation update adds 16 novel transcripts to existing genes, 8 improvements to existing transcript mappings, 17 genes in previously unannotated loci (11 of which were extra copies of existing genes), 2 new pseudogene annotations, and replaces 2 pseudogene annotations with genes. 
+
+6 of the added genes were not present in previous versions: MUC6, OR9G9, FCGBP-2, LILRA3, GSTT1, and MUC12.
 
 A count of gene biotypes before and after can be found below:
 
@@ -25,7 +27,7 @@ Note these totals are counted using the gene_biotype field, differing slightly f
 
 ### Lift-Over and Mapping
 
-We first ran LiftOn, mapping over MANE v1.5 genes from GRCh38 onto CHM13 using the following command:
+We first ran LiftOn (v1.0.14), mapping over MANE v1.5 genes from GRCh38 onto CHM13 using the following command:
 
 ```bash
 lifton -g ./MANEv1.5.gff -chroms ./chrom_mapping.txt -copies -sc 0.9 ./chm13v2.0.fa ./hg38.p14.fa -o MANE_on_chm13.gff
@@ -116,9 +118,9 @@ If A overlaps with an existing pseudogene P:
 To run these scripts, install the following:
 
 Tools:
- - LiftOn
- - gffcompare
- - gffread
+ - LiftOn v1.0.14
+ - gffcompare v0.12.6
+ - gffread v0.12.7
 
 Python Libraries:
  - pandas
