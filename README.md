@@ -6,7 +6,9 @@ This update incorporates newly added genes from MANE v1.5 into the T2T-CHM13 ann
 
 ## Results
 
-The v5.31 annotation update adds 16 novel transcripts to existing genes, 8 improvements to existing transcript mappings, 17 novel gene loci (10 of which were extra copies of existing genes), 2 new pseudogene annotations, and replaces 2 pseudogene annotations with genes. 
+The v5.31 annotation update adds 16 novel transcripts to existing genes, 8 improvements to existing transcript mappings, 17 genes in previously unannotated loci (11 of which were extra copies of existing genes), 2 new pseudogene annotations, and replaces 2 pseudogene annotations with genes. 
+
+6 of the added genes were not present in previous versions: MUC6, OR9G9, FCGBP-2, LILRA3, GSTT1, and MUC12.
 
 A count of gene biotypes before and after can be found below:
 
@@ -25,7 +27,7 @@ Note these totals are counted using the gene_biotype field, differing slightly f
 
 ### Lift-Over and Mapping
 
-We first ran LiftOn, mapping over MANE v1.5 genes from GRCh38 onto CHM13, using the following command:
+We first ran LiftOn (v1.0.14), mapping over MANE v1.5 genes from GRCh38 onto CHM13 using the following command:
 
 ```bash
 lifton -g ./MANEv1.5.gff -chroms ./chrom_mapping.txt -copies -sc 0.9 ./chm13v2.0.fa ./hg38.p14.fa -o MANE_on_chm13.gff
@@ -33,7 +35,7 @@ lifton -g ./MANEv1.5.gff -chroms ./chrom_mapping.txt -copies -sc 0.9 ./chm13v2.0
 
 This lifts chromosome-by-chromosome, and searches for additional copies of genes that share at least 90% identity with the first copy.
 
-We then altered the CHM13 v5.3 annotation to give each pseudogene a single-exon transcript, then used gffcompare to map each MANE transcript to its closest CHM13 v5.3 transcript:
+We altered the CHM13 v5.3 annotation to give each pseudogene a single-exon transcript, then used gffcompare to map each MANE transcript to its closest CHM13 v5.3 transcript:
 
 ```bash
 gffread --gene2exon ./chm13v2.0.fa > ./chm13v2.0_gene2exon.gff
@@ -109,15 +111,16 @@ If A overlaps with an existing pseudogene P:
         Filter out A
 ```
 
-21 mappings were manually reviewed, final decisions and notes on each can be found in [manual_review_decisions.csv](./manual_review_decisions.csv)
+23 mappings were manually reviewed, final decisions and notes on each can be found in [manual_review_decisions.csv](./manual_review_decisions.csv)
 
 ## Reproducing Results
 
 To run these scripts, install the following:
 
 Tools:
- - LiftOn
- - gffcompare
+ - LiftOn v1.0.14
+ - gffcompare v0.12.6
+ - gffread v0.12.7
 
 Python Libraries:
  - pandas
@@ -134,3 +137,11 @@ Python Libraries:
  ```
 
  Note that generating the new annotation relies on the decisions in [manual_review_decisions.csv](./manual_review_decisions.csv).
+
+ ### Output
+
+ The updated annotation file is created as ```chm13v5.31_MANE_updated.gff```. 
+ A list of all changes made to the annotation is in ```annotation_changes.tsv```. 
+ Lastly, a record of what was done with the novel MANE v1.5 genes is listed in ```gene_trace.tsv```.
+
+ If you wish to track a different set of genes from MANE, change the list of dbxref gene IDs in ```gene_ids_new_in_MANE1.5.txt``` to those of your choosing.
