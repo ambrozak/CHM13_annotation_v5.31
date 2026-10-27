@@ -49,7 +49,10 @@ Format (hard-coded from the CHM13 Liftoff annotation, see FORMAT below)
   (dropping it would change the encoded protein).
 
 IDs
-  New transcripts keep their accession without 'rna-'. Any new ID (gene or
+  New genes are named by the lifted gene's symbol (Name=), new transcripts
+  by their accession without 'rna-'. The '-N' copy suffix LiftOn/MANE put
+  on IDs (gene-FCGBP-2, rna-NM_003890.3-2) is dropped, so FCGBP and
+  NM_003890.3; children's Parent= follow the new IDs. Any new ID (gene or
   transcript) that already exists in the file is FLAGged and suffixed
   _1 (then _2, ...) until unique. A Replace reuses the removed ID.
 
@@ -263,11 +266,31 @@ class Lifted:
                 if c["type"] not in SUBFEATURE_TYPES and c["a"].get("ID")]
 
 
-def tx_accession(tx_id):
-    return tx_id[4:] if tx_id.startswith("rna-") else tx_id
+# LiftOn/MANE mark extra copies with a '-N' suffix on the ID only
+# (ID=gene-FCGBP-2;Name=FCGBP, ID=rna-NM_003890.3-2;Name=NM_003890.3).
+COPY_SUFFIX_RE = re.compile(r"-\d+$")
+# RefSeq versioned accession (NM_003890.3), which never itself ends in -N.
+ACCESSION_RE = re.compile(r"^[A-Z]{2}_\d+\.\d+$")
+
+
+def tx_accession(tx_id, tx=None):
+    """ID for a new transcript: the lifted ID without 'rna-' and without a
+    '-N' copy suffix (rna-NM_003890.3-2 -> NM_003890.3). The suffix is only
+    dropped when what is left is the transcript's own transcript_id/Name or
+    a versioned RefSeq accession."""
+    acc = tx_id[4:] if tx_id.startswith("rna-") else tx_id
+    base = COPY_SUFFIX_RE.sub("", acc)
+    if base != acc:
+        names = {tx["a"].get("transcript_id"), tx["a"].get("Name")} if tx else set()
+        if base in names or ACCESSION_RE.match(base):
+            return base
+    return acc
 
 
 def gene_symbol(gene):
+    """Symbol of a lifted gene, also used as a new gene's ID. Name=/gene=
+    never carry the '-N' copy suffix (ID=gene-FCGBP-2;Name=FCGBP -> FCGBP),
+    and symbols that genuinely end in -digits (NKX2-1) are kept whole."""
     a = gene["a"]
     return a.get("Name") or a.get("gene") or re.sub(r"^gene-", "", a["ID"])
 
@@ -586,7 +609,7 @@ class Editor:
         gidx = self.ex.id_idx[gene]
         ecn = self.ex.attrs[gidx].get("extra_copy_number", "0")
         symbol = self.ex.attrs[gidx].get("gene") or gene
-        new_id = self.alloc_id(tx_accession(tx_id), "transcript", flags)
+        new_id = self.alloc_id(tx_accession(tx_id, tx), "transcript", flags)
         lines = format_transcript(self.lifted, tx_id, tx, new_id, gene, symbol, ecn)
         self.insert_before(self.ex.block_end[self.ex.root[gidx]] + 1, lines, priority=0)
         rec["new_ids"] = new_id
@@ -594,13 +617,13 @@ class Editor:
 
     def _replace(self, p, tx_id, tx, rec, flags, notes):
         """Replace the existing transcript whose ID is this transcript's ID
-        (without 'rna-'), wherever it is in the file -- independent of which
+        (without 'rna-' or a '-N' copy suffix), wherever it is in the file -- independent of which
         gene gffcompare paired the row with, so it works the same for
         automatic and manual Replace, novel-locus and pseudogene rows, and
         genes with no results row. The new transcript keeps that ID, goes
         under the same gene, in the same place in the file. The gene's
         GeneID must equal the lifted transcript's."""
-        acc = tx_accession(tx_id)
+        acc = tx_accession(tx_id, tx)
         oidx = self.ex.id_idx.get(acc)
         if oidx is None:
             oidx = self.ex.id_idx.get("rna-" + acc)
@@ -683,7 +706,7 @@ class Editor:
         lines = [format_gene(gene, new_gene, txs)]
         new_ids = [new_gene]
         for tx_id, tx in txs:
-            tid = self.alloc_id(tx_accession(tx_id), "transcript", flags)
+            tid = self.alloc_id(tx_accession(tx_id, tx), "transcript", flags)
             new_ids.append(tid)
             lines += format_transcript(self.lifted, tx_id, tx, tid, new_gene, symbol, ecn)
         self.insert_before(self.new_gene_position(gene["chrom"], gene["start"]), lines,
